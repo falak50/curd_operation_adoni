@@ -1,0 +1,17 @@
+@layout('layouts/app.edge')
+@section('content')
+
+    @if(obj)
+       <h1>{{obj.name}}</h1>
+      <ul>
+          @each(skill in obj.skills)
+          <li>{{skill}}</li>
+          @endeach
+      </ul>
+
+    @endif
+
+    <a href="{{ route('/about') }}">about</a>
+    <a href="{{ route('/create') }}">create</a>
+
+@endsection
