@@ -1,26 +1,59 @@
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Item from 'App/Models/Item'
+import Item from 'App/Models/Item';
+import { schema, rules } from '@ioc:Adonis/Core/Validator';
 
 export default class ItemsController {
-    public async create({view}:HttpContextContract){
-        console.log('create')
-        return view.render('create')
+    async index () {
+        return Item.query().select('*')
     }
-
-    public async store ({ request, response }: HttpContextContract) {
-        
-            console.log('in the store');
-            const data = request.all();
-            console.log(data);
-            const item = new Item();
     
-            item.name = data.name;
-            item.quantity = data.quantity;
-            item.price = data.price;
+    async show ({ params }) {
+        const itemId = params.id
+        return Item.find(itemId)
+    }
     
+    async store ({ request, response }) {
+        const validationSchema = schema.create({
+            name: schema.string(),
+            quantity: schema.number(),
+            price: schema.number(),
+        });
+    
+        try {
+            const payload = await request.validate({ schema: validationSchema });
+    
+            await Item.create(payload);
+    
+            return response.status(201).send({ message: 'Item created successfully' });
+        } catch (error) {
+            return response.status(400).send({ error: error.messages });
+        }
+    }
+    
+    async destroy ({ params }) {
+        const itemId = params.id
+        await Item.query().where('id', itemId).delete()
+        return { message: 'Item deleted successfully' }
+    }
+    
+    async update ({ params, request, response }) {
+        const validationSchema = schema.create({
+            name: schema.string.optional(),
+            quantity: schema.number.optional(),
+            price: schema.number.optional(),
+        });
+    
+        try {
+            const payload = await request.validate({ schema: validationSchema });
+    
+            const itemId = params.id;
+            const item = await Item.findOrFail(itemId);
+    
+            item.merge(payload);
             await item.save();
     
-            return response.send('Item created successfully');
-     
+            return response.send({ message: 'Item updated successfully', item });
+        } catch (error) {
+            return response.status(400).send({ error: error.messages });
+        }
     }
 }

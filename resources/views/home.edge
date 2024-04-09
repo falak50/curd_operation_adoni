@@ -1,17 +1,37 @@
 @layout('layouts/app.edge')
 @section('content')
+<a href="{{ route('/about') }}">about</a>
+<a href="{{ route('/create') }}">create</a>
+@if(items)
+<h1>yes</h1>
+@endif
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+      
+        @each(item in items)
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }}</td>
+            {{--  <td><a href={{route('edit',{'id':item.id})}}>edit</a></td>  --}}
+            <td><a>edit</a></td>
+        
+        </tr>
+        @endeach
+    </tbody>
+</table>
 
-    @if(obj)
-       <h1>{{obj.name}}</h1>
-      <ul>
-          @each(skill in obj.skills)
-          <li>{{skill}}</li>
-          @endeach
-      </ul>
-
-    @endif
-
-    <a href="{{ route('/about') }}">about</a>
-    <a href="{{ route('/create') }}">create</a>
+   
 
 @endsection
+
