@@ -2,6 +2,10 @@ import Route from '@ioc:Adonis/Core/Route';
 import User from 'App/Models/User';
 import { schema, rules } from '@ioc:Adonis/Core/Validator';
 import Post from 'App/Models/Post';
+import Comment from 'App/Models/Comment';
+import Fbuser from 'App/Models/Fbuser';
+import FbComment from 'App/Models/FbComment';
+import Fbpost from 'App/Models/Fbpost';
 
 
 Route.get('/', async () => {
@@ -35,3 +39,21 @@ Route.delete('/items/:id', 'ItemsController.destroy')
  Route.post('/comments', 'CommentsController.store')
  Route.put('/comments/:id', 'CommentsController.update')
  Route.delete('/comments/:id', 'CommentsController.destroy')
+
+// ---------------------------xx----------------------
+// ---------------------------xx----------------------
+// Fbusers
+Route.get('/fbusers', 'FbusersController.index')
+Route.post('/fbusers', 'FbusersController.store')
+
+// Fbpost
+Route.get('/fbposts', 'FbpostsController.index')
+Route.post('/fbposts', 'FbpostsController.store')
+
+//FbComment
+Route.get('/fbcomments', 'FbCommentsController.index')
+Route.post('/fbcomments', 'FbCommentsController.store')
+
+
+
+ /// test 
